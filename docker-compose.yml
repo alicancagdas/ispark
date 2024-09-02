@@ -1,0 +1,152 @@
+version: '3.8'
+
+services:
+  react-app:
+    build:
+      context: ./tariff-creator-dynamic
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - tariff-service
+      - tariff-operation-service
+    networks:
+      - parking-network
+
+  tariff-service:
+    build:
+      context: ./tariff-service
+      dockerfile: src/main/resources/Dockerfile
+
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - mongodb
+      - kafka
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/tariffdb
+      - SPRING_DATASOURCE_USERNAME=tariff_user
+      - SPRING_DATASOURCE_PASSWORD=tariff_password
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/tariffservice
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - parking-network
+
+  tariff-operation-service:
+    build:
+      context: ./tariff-operation-service
+      dockerfile: src/main/resources/Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - kafka
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/tariffdb
+      - SPRING_DATASOURCE_USERNAME=tariff_op_user
+      - SPRING_DATASOURCE_PASSWORD=tariff_op_password
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/tariffoperationservice
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - TARIFF_SERVICE_URL=http://tariff-service:8080/api/v1/tariffs
+    networks:
+      - parking-network
+
+  customer-type-service:
+      build:
+        context: ./customer-type-service
+        dockerfile: src/main/resources/Dockerfile
+
+      ports:
+        - "8082:8080"
+      depends_on:
+        - mysql
+        - kafka
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/tariffdb
+        - SPRING_DATASOURCE_USERNAME=tariff_user
+        - SPRING_DATASOURCE_PASSWORD=tariff_password
+        - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      networks:
+        - parking-network
+
+  vehicle-type-service:
+    build:
+      context: ./vehicle-type-service
+      dockerfile: src/main/resources/Dockerfile
+    ports:
+      - "8083:8080"
+    depends_on:
+      - mysql
+      - kafka
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/tariffdb
+      - SPRING_DATASOURCE_USERNAME=tariff_user
+      - SPRING_DATASOURCE_PASSWORD=tariff_password
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - parking-network
+
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=tariffdb
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - parking-network
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - parking-network
+    ports:
+      - "27017:27017"
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+    depends_on:
+      - zookeeper
+    networks:
+      - parking-network
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+    networks:
+      - parking-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - parking-network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - parking-network
+
+volumes:
+  mysql_data:
+  mongo_data:
+
+networks:
+  parking-network:

@@ -13,16 +13,15 @@ services:
     networks:
       - parking-network
 
+
   tariff-service:
     build:
       context: ./tariff-service
       dockerfile: src/main/resources/Dockerfile
-
     ports:
       - "8080:8080"
     depends_on:
       - mysql
-      - mongodb
       - kafka
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/tariffdb
@@ -52,22 +51,21 @@ services:
       - parking-network
 
   customer-type-service:
-      build:
-        context: ./customer-type-service
-        dockerfile: src/main/resources/Dockerfile
-
-      ports:
-        - "8082:8080"
-      depends_on:
-        - mysql
-        - kafka
-      environment:
-        - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/tariffdb
-        - SPRING_DATASOURCE_USERNAME=tariff_user
-        - SPRING_DATASOURCE_PASSWORD=tariff_password
-        - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      networks:
-        - parking-network
+    build:
+      context: ./customer-type-service
+      dockerfile: src/main/resources/Dockerfile
+    ports:
+      - "8082:8080"
+    depends_on:
+      - mysql
+      - kafka
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/tariffdb
+      - SPRING_DATASOURCE_USERNAME=tariff_user
+      - SPRING_DATASOURCE_PASSWORD=tariff_password
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - parking-network
 
   vehicle-type-service:
     build:
@@ -85,8 +83,22 @@ services:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     networks:
       - parking-network
-
-
+  location-service:
+    build:
+      context: ./location-service
+      dockerfile: src/main/resources/Dockerfile
+    ports:
+      - "8084:8080"
+    depends_on:
+      - mysql
+      - kafka
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/tariffdb
+      - SPRING_DATASOURCE_USERNAME=tariff_user
+      - SPRING_DATASOURCE_PASSWORD=tariff_password
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - parking-network
   mysql:
     image: mysql:8.0
     environment:
@@ -132,6 +144,10 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
     networks:
       - parking-network
 

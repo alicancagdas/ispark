@@ -17,4 +17,9 @@ public class TariffKafkaProducer {
         kafkaTemplate.send(TOPIC, tariff);
         System.out.println("Kafka Producer - Sent tariff: " + tariff.getTarifeNo());
     }
+
+    public void sendDuplicatedTariff(Tariff duplicatedTariff) {
+        kafkaTemplate.send("tariff-topic", duplicatedTariff);
+        System.out.println("Duplicated tariff sent to Kafka: " + duplicatedTariff.getTarifeNo());
+    }
 }

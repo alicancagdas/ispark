@@ -5,7 +5,6 @@ import com.ispark.tariff_service.service.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class TariffKafkaConsumer {
@@ -15,8 +14,14 @@ public class TariffKafkaConsumer {
 
     @KafkaListener(topics = "tariff-topic", groupId = "tariff-group")
     public void listen(Tariff kafkaTariff) {
-        // Kafka'dan gelen tarifeyi işleyin ve yeni bir tarife oluşturun
-        Tariff newTariff = tariffService.createTariffFromKafka(kafkaTariff);
-        System.out.println("Created new tariff with tarifeNo: " + newTariff.getTarifeNo());
+        if (kafkaTariff.getName().contains("DUPLICATE")) {
+            // Perform duplication logic
+            Tariff newTariff = tariffService.duplicateAndChangeName(kafkaTariff);
+            System.out.println("Duplicated tariff with new name: " + newTariff.getName());
+        } else {
+            // Create a new tariff normally
+            Tariff newTariff = tariffService.createTariffFromKafka(kafkaTariff);
+            System.out.println("Created new tariff with tarifeNo: " + newTariff.getTarifeNo());
+        }
     }
 }

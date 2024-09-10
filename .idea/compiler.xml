@@ -2,18 +2,27 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="parking-area-service" />
         <module name="tariff-service" />
         <module name="customer-type-service" />
+        <module name="package-creator-service" />
         <module name="tariff-operation-service" />
+        <module name="api-gateway-service" />
+        <module name="location-service" />
         <module name="vehicle-type-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="api-gateway-service" target="17" />
       <module name="customer-type-service" target="17" />
+      <module name="location-service" target="17" />
+      <module name="package-creator-service" target="17" />
+      <module name="parking-area-service" target="17" />
       <module name="tariff-operation-service" target="17" />
       <module name="tariff-service" target="17" />
       <module name="vehicle-type-service" target="17" />
@@ -21,7 +30,11 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-gateway-service" options="-parameters" />
       <module name="customer-type-service" options="-parameters" />
+      <module name="location-service" options="-parameters" />
+      <module name="package-creator-service" options="-parameters" />
+      <module name="parking-area-service" options="-parameters" />
       <module name="tariff-operation-service" options="-parameters" />
       <module name="tariff-service" options="-parameters" />
       <module name="vehicle-type-service" options="-parameters" />

@@ -34,7 +34,13 @@ public class TariffController {
         return new ResponseEntity<>(createdTariff, HttpStatus.CREATED);
     }
 
-
+    @PostMapping("/duplicate/{tarifeNo}")
+    public ResponseEntity<Tariff> duplicateTariff(@PathVariable String tarifeNo) {
+        Tariff originalTariff = tariffService.getTariffByTarifeNo(tarifeNo);
+        Tariff duplicatedTariff = tariffService.duplicateAndChangeName(originalTariff);
+        return ResponseEntity.ok(duplicatedTariff);
+    }
+    
     @PutMapping("/tarifeNo/{tarifeNo}")
     public ResponseEntity<Tariff> updateTariff(@PathVariable String tarifeNo, @RequestBody Tariff updatedTariff) {
         Tariff updated = tariffService.updateTariffByTarifeNo(tarifeNo, updatedTariff);

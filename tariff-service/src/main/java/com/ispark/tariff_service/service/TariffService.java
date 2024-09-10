@@ -42,7 +42,21 @@ public class TariffService {
         // Tariff veritabanına kaydediliyor
         return tariffRepository.save(createdTariff);
     }
+    // Method to duplicate a tariff and change its name
+    // Method to duplicate a tariff and change its name
+    public Tariff duplicateAndChangeName(Tariff originalTariff) {
+        // Use the factory to create the duplicated tariff
+        Tariff duplicatedTariff = TariffFactory.createTariff(originalTariff, "Duplicated from " + originalTariff.getTarifeNo());
 
+        // Change the name to indicate duplication
+        duplicatedTariff.setName("Copy of " + originalTariff.getName());
+
+        // Save and log the operation
+        Tariff savedTariff = tariffRepository.save(duplicatedTariff);
+        loggerService.logInfo("Duplicated tariff with new TarifeNo: " + savedTariff.getTarifeNo());
+
+        return savedTariff;
+    }
     public Tariff updateTariffByTarifeNo(String tarifeNo, Tariff updatedTariff) {
         loggerService.logInfo("Updating tariff with TarifeNo: " + tarifeNo);
 

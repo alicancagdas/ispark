@@ -4,5 +4,7 @@
 
 /* Custom styling can be added here */
 body {
-  background-color: #254c9b; /* Light gray background */
+  background-color: #689398; /* Light gray background */
 }
+/* Bootstrap import */
+@import 'bootstrap/dist/css/bootstrap.min.css';

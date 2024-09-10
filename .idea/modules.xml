@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/api-gateway-service/api-gateway-service.iml" filepath="$PROJECT_DIR$/api-gateway-service/api-gateway-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/customer-type-service/customer-type-service.iml" filepath="$PROJECT_DIR$/customer-type-service/customer-type-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ispark_otopark.iml" filepath="$PROJECT_DIR$/.idea/ispark_otopark.iml" />
+      <module fileurl="file://$PROJECT_DIR$/location-service/location-service.iml" filepath="$PROJECT_DIR$/location-service/location-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/package-creator-service/package-creator-service.iml" filepath="$PROJECT_DIR$/package-creator-service/package-creator-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/parking-area-service/parking-area-service.iml" filepath="$PROJECT_DIR$/parking-area-service/parking-area-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/tariff-operation-service/tariff-operation-service.iml" filepath="$PROJECT_DIR$/tariff-operation-service/tariff-operation-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/tariff-service/tariff-service.iml" filepath="$PROJECT_DIR$/tariff-service/tariff-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/vehicle-type-service/vehicle-type-service.iml" filepath="$PROJECT_DIR$/vehicle-type-service/vehicle-type-service.iml" />

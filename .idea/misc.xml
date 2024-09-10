@@ -7,6 +7,10 @@
         <option value="$PROJECT_DIR$/vehicle-type-service/pom.xml" />
         <option value="$PROJECT_DIR$/customer-type-service/pom.xml" />
         <option value="$PROJECT_DIR$/tariff-operation-service/pom.xml" />
+        <option value="$PROJECT_DIR$/api-gateway-service/pom.xml" />
+        <option value="$PROJECT_DIR$/package-creator-service/pom.xml" />
+        <option value="$PROJECT_DIR$/location-service/pom.xml" />
+        <option value="$PROJECT_DIR$/parking-area-service/pom.xml" />
       </list>
     </option>
   </component>

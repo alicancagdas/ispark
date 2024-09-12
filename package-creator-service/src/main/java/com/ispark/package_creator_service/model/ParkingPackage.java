@@ -1,33 +1,33 @@
 package com.ispark.package_creator_service.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import jakarta.persistence.*;
 import java.util.List;
 
-@Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class ParkingPackage { // Paket sınıfının ismini değiştiriyoruz
+@Document(collection = "parkingPackages")
+public class ParkingPackage {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String packageId;
-
-    @Column(nullable = false)
-    private String packageName;
-
-    @Column(nullable = false)
-    private String customerTypeNo;
-
-    @Column(nullable = false)
+    private String id;
+    private String packageName;          // Paket ismi
+    private String packageDescription;   // Paket açıklaması
     private String customerTypeName;
+    private String customerTypeNo;
+    private List<VehicleType> vehicleTypes; // Araç tipleri tarifeleri içerir.
 
-    @ElementCollection
-    private List<VehicleTypeWithTariff> vehicleTypes;
+    @Data
+    public static class VehicleType {
+        private String vehicleTypeName;
+        private String vehicleTypeNo;
+        private List<Tariff> tariffs; // Her araç tipi kendi tarifelerini içerir.
+    }
+
+    @Data
+    public static class Tariff {
+        private String tariffNo;
+        private String tariffName;
+    }
 }

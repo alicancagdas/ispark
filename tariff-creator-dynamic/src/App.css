@@ -37,3 +37,28 @@ button:hover {
     opacity: 1;
   }
 }
+.App {
+  background-color: #F5F5F5; /* Light gray */
+  min-height: 100vh;
+}
+
+.navbar-dark {
+  background-color: #1F3C73; /* Deep navy blue */
+}
+
+.nav-link {
+  color: #FFFFFF !important; /* White text for nav items */
+}
+
+.fw-bold {
+  color: #FFC107; /* Bright yellow for the brand name */
+}
+
+.tab-content .bg-white {
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.text-dark {
+  color: #1F3C73 !important; /* Darker navy for text inside tabs */
+}

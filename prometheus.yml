@@ -10,5 +10,4 @@ scrape_configs:
     static_configs:
       - targets: ['vehicle-type-service:8081:8080']
     metrics_path: '/actuator/prometheus'
-  - job_name: 'vehicle-type-service'
 

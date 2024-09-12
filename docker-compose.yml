@@ -13,7 +13,6 @@ services:
     networks:
       - parking-network
 
-
   tariff-service:
     build:
       context: ./tariff-service
@@ -50,6 +49,26 @@ services:
     networks:
       - parking-network
 
+
+  package-creator-service:
+    build:
+      context: ./package-creator-service
+      dockerfile: src/main/resources/Dockerfile
+    ports:
+      - "8085:8080"
+    depends_on:
+      - mysql
+      - mongodb
+      - kafka
+      - customer-type-service
+      - vehicle-type-service
+      - tariff-service
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/packagecreatorservice
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    networks:
+      - parking-network
+
   customer-type-service:
     build:
       context: ./customer-type-service
@@ -83,6 +102,7 @@ services:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     networks:
       - parking-network
+
   location-service:
     build:
       context: ./location-service
@@ -99,6 +119,7 @@ services:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     networks:
       - parking-network
+
   mysql:
     image: mysql:8.0
     environment:
@@ -106,6 +127,23 @@ services:
       - MYSQL_DATABASE=tariffdb
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - parking-network
+
+  upper-package-service:
+    build:
+      context: ./upper-package-service
+      dockerfile: src/main/resources/Dockerfile
+    ports:
+      - "8086:8080"
+    depends_on:
+      - mongodb
+      - kafka
+      - package-creator-service
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/upperpackageservice
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - PACKAGE_CREATOR_SERVICE_URL=http://package-creator-service:8085/api/packages
     networks:
       - parking-network
 
@@ -166,3 +204,4 @@ volumes:
 
 networks:
   parking-network:
+    driver: bridge

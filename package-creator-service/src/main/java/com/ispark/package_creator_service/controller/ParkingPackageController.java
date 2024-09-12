@@ -1,31 +1,50 @@
 package com.ispark.package_creator_service.controller;
 
-
-import com.ispark.packagecreator.dto.ParkingPackageDto;
-import com.ispark.packagecreator.model.ParkingPackage;
-import com.ispark.packagecreator.service.ParkingPackageService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import com.ispark.package_creator_service.model.ParkingPackage;
+import com.ispark.package_creator_service.service.ParkingPackageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/parking-packages")
-@RequiredArgsConstructor
 public class ParkingPackageController {
 
-    private final ParkingPackageService parkingPackageService;
+    @Autowired
+    private ParkingPackageService parkingPackageService;
 
     @PostMapping
-    public ResponseEntity<ParkingPackage> createParkingPackage(@RequestBody ParkingPackageDto parkingPackageDto) {
-        ParkingPackage parkingPackage = parkingPackageService.createParkingPackage(parkingPackageDto);
-        return new ResponseEntity<>(parkingPackage, HttpStatus.CREATED);
+    public ResponseEntity<ParkingPackage> createParkingPackage(@RequestBody ParkingPackage parkingPackage) {
+        return ResponseEntity.ok(parkingPackageService.createParkingPackage(parkingPackage));
     }
 
-    @PostMapping("/send-to-kafka")
-    public ResponseEntity<String> sendPackageToKafka(@RequestBody ParkingPackageDto parkingPackageDto) {
-        ParkingPackage parkingPackage = parkingPackageService.createParkingPackage(parkingPackageDto);
-        parkingPackageService.sendPackageToKafka(parkingPackage);
-        return new ResponseEntity<>("Package sent to Kafka successfully", HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<ParkingPackage>> getAllParkingPackages() {
+        return ResponseEntity.ok(parkingPackageService.getAllParkingPackages());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ParkingPackage> getParkingPackageById(@PathVariable String id) {
+        return ResponseEntity.ok(parkingPackageService.getParkingPackageById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ParkingPackage> updateParkingPackage(
+            @PathVariable String id, @RequestBody ParkingPackage parkingPackage) {
+        return ResponseEntity.ok(parkingPackageService.updateParkingPackage(id, parkingPackage));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteParkingPackage(@PathVariable String id) {
+        parkingPackageService.deleteParkingPackage(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/duplicate/{id}")
+    public ResponseEntity<ParkingPackage> duplicateParkingPackage(@PathVariable String id) {
+        return ResponseEntity.ok(parkingPackageService.duplicateParkingPackage(id));
     }
 }

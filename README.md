@@ -30,6 +30,7 @@ To build and run all the services defined in the `docker-compose.yml` file, use 
 
 ```bash
 docker-compose up --build
+```
 
 # ISPARK Parking Management System - Services and Access Guide
 
@@ -75,6 +76,5 @@ This guide provides all the necessary steps to set up and run the ISPARK Parking
 
 
 ## Here it's Turkish Documentation
-
 
 [readme.pdf](https://github.com/user-attachments/files/17084478/readme.pdf)

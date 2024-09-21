@@ -1,6 +1,6 @@
 when you need help you can reach me from linkedn.
 ## Here it's Turkish Documentation
-[readme.pdf]([https://github.com/user-attachments/files/17084478/readme.pdf](https://github.com/alicancagdas/ispark/tree/presentation))
+([https://github.com/alicancagdas/ispark/tree/presentation])
 # ISPARK Parking Management System
 
 ## Introduction

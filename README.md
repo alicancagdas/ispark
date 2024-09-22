@@ -70,6 +70,7 @@ docker-compose up --build
 ## Monitoring with Prometheus and Grafana
 **Prometheus:** Monitor system metrics at [http://localhost:9090](http://localhost:9090).  
 **Grafana:** Visualize metrics at [http://localhost:3001](http://localhost:3001).
+**MongoDb Express** Examine Mongo Database  [http://localhost:2727](http://localhost:2727).
 
 ## Conclusion
 This guide provides all the necessary steps to set up and run the ISPARK Parking Management System. Each service is accessible via its respective port as outlined above, with Swagger UI enabled for interacting with the APIs directly.
